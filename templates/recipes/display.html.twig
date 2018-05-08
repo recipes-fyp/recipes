@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recipes{% endblock %}
+{% block body %}
+
+	<h1>Recipe : {{ recipe.title }} </h1>
+
+	<div class="form-group">
+		<span class="label label-default">Summary</span>
+		<span class="form-control">{{ recipe.summary }}</span>
+	</div>
+
+	<div class="form-group">
+		<span class="label label-default">Steps</span>
+		<ol class="form-control">
+		
+			{% for step in recipe._steps %}
+				<li class="value">{{ step }}</li>
+			{% endfor %}
+
+		</ol>
+	</div>
+
+	<div class="form-group">
+		<span class="label label-default">Ingredients</span>
+		<ul class="form-control">
+			
+			{% for ingredient in recipe._ingredients %}
+				<li class="value">{{ ingredient }}</li>
+			{% endfor %}
+
+
+		</ul>
+	</div>
+
+	<a class="button" href="/">Back</a>
+
+{% endblock %}
