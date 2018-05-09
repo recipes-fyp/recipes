@@ -27,8 +27,36 @@
                 <td>{{ recipe.steps }}</td>
                 <td>{{ recipe.ingredients }}</td>
                 <td>
-                    <a href="{{ path('recipe_show', {'id': recipe.id}) }}">show</a>
-                    <a href="{{ path('recipe_edit', {'id': recipe.id}) }}">edit</a>
+                    <div class="btn-group">
+                        <a 
+                            href="{{ path('recipe_show', {'id': recipe.id}) }}" 
+                            data-toggle="tooltip" title="Show recipe" 
+                            class="btn btn-light">
+                            <span class="fa fa-eye"></span>    
+                        </a>
+
+                        <a 
+                            href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                            data-toggle="tooltip" title="Edit recipe"  
+                            class="btn btn-light">
+                            <span class="fa fa-edit"></span>
+                        </a>
+
+                        <a 
+                            href="{{ path('recipe_show', {'id': recipe.id}) }}" 
+                            data-toggle="tooltip" title="Share recipe" 
+                            class="btn btn-light">
+                            <span class="fa fa-share"></span>
+                        </a>
+
+                        <a 
+                            href="{{ path('recipe_delete', {'id': recipe.id}) }}" 
+                            data-toggle="tooltip" title="Delete recipe" 
+                            class="btn btn-danger">
+                            <span class="fa fa-trash"></span>
+                        </a>
+
+                    </div>
                 </td>
             </tr>
         {% else %}
@@ -39,5 +67,11 @@
         </tbody>
     </table>
 
-    <a href="{{ path('recipe_new') }}">Create new</a>
+    <a href="{{ path('recipe_new') }}" 
+        data-toggle="tooltip" title="New recipe" 
+        class="btn btn-light">
+        <span class="fa fa-plus"></span>
+        New Recipe
+    </a>
+
 {% endblock %}

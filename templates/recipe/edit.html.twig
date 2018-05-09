@@ -6,8 +6,17 @@
     <h1>Edit Recipe</h1>
 
     {{ include('recipe/_form.html.twig', {'button_label': 'Update'}) }}
+	<div class="btn-group">
 
-    <a href="{{ path('recipe_index') }}">back to list</a>
+        <a 
+            href="{{ path('recipe_index') }}"
+            data-toggle="tooltip" title="Back to Recipes" 
+            class="btn btn-light">
+            <span class="fa fa-arrow-left"></span>
+            Back
+        </a>
 
-    {{ include('recipe/_delete_form.html.twig') }}
+
+	    {{ include('recipe/_delete_form.html.twig') }}		
+	</div>
 {% endblock %}
