@@ -2,68 +2,89 @@
 
 namespace App\Controller;
 
+use App\Entity\Recipe;
+use App\Form\RecipeType;
+use App\Repository\RecipeRepository;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
-use App\Entity\Recipe;
+/**
+ * @Route("/recipe")
+ */
+class RecipeController extends Controller
+{
+    /**
+     * @Route("/", name="recipe_index", methods="GET")
+     */
+    public function index(RecipeRepository $recipeRepository): Response
+    {
+        return $this->render('recipe/index.html.twig', ['recipes' => $recipeRepository->findAll()]);
+    }
 
-class RecipeController extends Controller {
-	/**
-	 * @Route("/")
-	 */
-	public function index() {
-		// return new Response("hello");
-		$recipes = $this->getDoctrine()->getRepository(Recipe::class)->findAll();
-		return $this->render('recipes/index.html.twig' , [ 'recipes' => $recipes ]);
-	}
+    /**
+     * @Route("/new", name="recipe_new", methods="GET|POST")
+     */
+    public function new(Request $request): Response
+    {
+        $recipe = new Recipe();
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
 
-	/**
-	 * @Route("/recipe/{id}")
-	 */
-	public function recipe($id) {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($recipe);
+            $em->flush();
 
-		$recipe = $this->getDoctrine()->getRepository(Recipe::class)->find($id);
+            return $this->redirectToRoute('recipe_index');
+        }
 
-		$recipe->_steps = explode( PHP_EOL , $recipe->getSteps() );
-		$recipe->_ingredients = explode( PHP_EOL , $recipe->getIngredients() );
+        return $this->render('recipe/new.html.twig', [
+            'recipe' => $recipe,
+            'form' => $form->createView(),
+        ]);
+    }
 
-		return $this->render("recipes/display.html.twig" , ['recipe' => $recipe ]);
+    /**
+     * @Route("/{id}", name="recipe_show", methods="GET")
+     */
+    public function show(Recipe $recipe): Response
+    {
+        return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
+    }
 
-	}
+    /**
+     * @Route("/{id}/edit", name="recipe_edit", methods="GET|POST")
+     */
+    public function edit(Request $request, Recipe $recipe): Response
+    {
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
 
-	/**
-	 * @Route("/recipe/init")
-	 */
-	 public function init() {
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->getDoctrine()->getManager()->flush();
 
-	 	$em = $this->getDoctrine()->getManager();
-	 	
-	 	$recipe = new Recipe();
-	 	$recipe->setTitle("Scrambled Eggs")
-	 		->setSummary("The old breakfast classic - Scrambled Eggs")
-	 		->setSteps(<<<EOF
-				1. Break half dozen eggs into a bowl
-				2. Add 1/4 pint of cream
-				3. Add a pinch of salt and pepper to season
-				4. Whisk gently until frothy
-				5. Add a knob of butter to a gently heated pot
-				6. Add whisked eggs to pot
-				7. Stir gently using a wooden spoon/spatula ensuring eggs do not stick to bottom of pot
-				8. Remove eggs onto plate when golden yellow and still slightly moist
-				9. Serve
-EOF
-	 		)->setIngredients(<<<EOF
-				6 eggs
-				1/4 (100ml) pint cream
-				salt and pepper
-				knob (2g) botter
-EOF
-	 		);
+            return $this->redirectToRoute('recipe_edit', ['id' => $recipe->getId()]);
+        }
 
-	 	$em->persist($recipe);
-	 	$em->flush();
+        return $this->render('recipe/edit.html.twig', [
+            'recipe' => $recipe,
+            'form' => $form->createView(),
+        ]);
+    }
 
-	 	return new Response("Saved a new Recipe with ID " . $recipe->getId() );
-	 }
+    /**
+     * @Route("/{id}", name="recipe_delete", methods="DELETE")
+     */
+    public function delete(Request $request, Recipe $recipe): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($recipe);
+            $em->flush();
+        }
+
+        return $this->redirectToRoute('recipe_index');
+    }
 }
