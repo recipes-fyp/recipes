@@ -12,11 +12,29 @@
 			<li class="nav-item">
 				<a href="/" class="nav-link">Home</a>
 			</li>
+			
+			{# efc add login #}
+			{% if is_granted('ROLE_USER') %}
 
-			<li class="nav-item">
-				<a href="/recipe/new" class="nav-link">New Recipe</a>
-			</li>
+				<li class="nav-item">
+					<a 
+						href="{{ path('fos_user_security_logout') }}" 
+						class="nav-link">
+						Logout
+					</a>
+				</li>
 
+			{% else %}
+
+				<li class="nav-item">
+					<a 
+						href="{{ path('fos_user_security_login') }}" 
+						class="nav-link">
+						Login
+					</a>
+				</li>
+
+			{% endif %}
 
 		</ul>
 		<div class="collapse navbar-collapse" id="mobile-nav"></div>
