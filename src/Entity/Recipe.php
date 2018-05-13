@@ -65,6 +65,11 @@ class Recipe
      */
     private $comments;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Collection", inversedBy="recipes")
+     */
+    private $collection;
+
     public function __construct() {
         $this->created = new \DateTime();
         $this->comments = new ArrayCollection();
@@ -246,6 +251,18 @@ class Recipe
 
     public function __toString() {
         return $this->title;
+    }
+
+    public function getCollection(): ?Collection
+    {
+        return $this->collection;
+    }
+
+    public function setCollection(?Collection $collection): self
+    {
+        $this->collection = $collection;
+
+        return $this;
     }    
 }
 
