@@ -1,0 +1,125 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collections{% endblock %}
+
+{% block body %}
+    <h1>Collections</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Owner</th>
+                <th>Title</th>
+                <th>Public</th>
+                <th>Shared</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for coll in colls %}
+            <tr>
+                <td>{{ coll.id }}</td>
+                <td>{{ coll.created }}</td>
+                <td>{{ coll.user }}</td>
+                <td>{{ coll.title }}</td>
+                {# <td>{{ coll.isShared ? 'Yes' : 'No' }}</td> #}
+
+
+                <td>
+
+                    {# only display link if owned  #}
+                    {% if coll.isOwner(app.user) and not coll.isPublic %}
+                        <a 
+                        href="{{ path('coll_public', {'id': coll.id}) }}"
+                        data-toggle="tooltip" title="Make Collection public. Cannot undo"  
+                        class="btn btn-light">
+                        
+                        {{ coll.isPublic ? "Yes" : "No" }}
+                    
+                        </a>
+
+                    {% else %}
+
+                        {{ coll.isPublic ? "Yes" : "No" }}
+
+                    {% endif %}                    
+
+{#                 <td>
+                    <a href="{{ path('coll_show', {'id': coll.id}) }}">show</a>
+                    <a href="{{ path('coll_edit', {'id': coll.id}) }}">edit</a>
+                </td>
+ #}
+                <td>
+
+                    {% if coll.isOwner(app.user) %}
+                        <a 
+                            href="{{ path('coll_share', {'id': coll.id}) }}"
+                            data-toggle="tooltip" title="Share Collection`"  
+                            class="btn btn-light">
+                    
+                                {{ coll.isShared ? "Yes" : "No" }}
+
+                        </a>
+
+                    {% else %}
+
+                        {{ coll.isShared ? "Yes" : "No" }}
+
+                    {% endif %}                    
+
+
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a 
+                            href="{{ path('coll_show', {'id': coll.id}) }}" 
+                            data-toggle="tooltip" title="Show Collection" 
+                            class="btn btn-light">
+                            <span class="fa fa-eye"></span>    
+                        </a>
+
+                        {% if coll.isOwner(app.user) %}
+                            <a 
+                                href="{{ path('coll_edit', {'id': coll.id}) }}"
+                                data-toggle="tooltip" title="Edit Collection"  
+                                class="btn btn-light">
+                                <span class="fa fa-edit"></span>
+                            </a>
+
+
+                            <a 
+                                href="{{ path('coll_share', {'id': coll.id}) }}" 
+                                data-toggle="tooltip" title="Share Collection" 
+                                class="btn btn-light">
+                                <span class="fa fa-share"></span>
+                            </a>
+
+                            <a 
+                                href="{{ path('coll_delete', {'id': coll.id}) }}" 
+                                data-toggle="tooltip" title="Delete Collection" 
+                                class="btn btn-danger">
+                                <span class="fa fa-trash"></span>
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+                </td>
+
+                
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    
+    {% if app.user %}
+        <a href="{{ path('coll_new') }}">Create new Collection</a>
+    {% endif %}
+
+{% endblock %}

@@ -46,7 +46,7 @@ class Recipe
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="recipes")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $user;
 
@@ -69,6 +69,12 @@ class Recipe
      * @ORM\ManyToOne(targetEntity="App\Entity\Coll", inversedBy="recipes")
      */
     private $coll;
+
+    // *
+    //  * @ORM\ManyToOne(targetEntity="App\Entity\Coll", inversedBy="recipes")
+    //  * @ORM\Column(nullable=true)
+     
+    // private $coll;
 
     public function __construct() {
         $this->created = new \DateTime();

@@ -1,0 +1,138 @@
+
+{% block body %}
+    <h2>Recipes</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Created</th>
+                <th>Owner</th>
+                <th>Collection</th>
+                <th>Title</th>
+                <th>Summary</th>
+                <th>Steps</th>
+                <th>Ingredients</th>
+                {# <th>Owned</th> #}
+                <th>Public</th>
+                <th>Shared</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for recipe in recipes %}
+            <tr>
+                <td>{{ recipe.id }}</td>
+                <td>{{ recipe.created ? recipe.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ recipe.user.username }}</td>
+                <td>{{ recipe.coll ? recipe.coll.title : "not set" }}</td>
+                <td>{{ recipe.title }}</td>
+                <td>{{ recipe.summary }}</td>
+                <td>{{ recipe.steps }}</td>
+                <td>{{ recipe.ingredients }}</td>
+{#                 <td>
+                    {{ recipe.isOwned(app.user) }}
+                </td>
+ #}
+                <td>
+
+                    {# only display link if owned  #}
+                    {% if recipe.isOwner(app.user) and not recipe.isPublic %}
+                        <a 
+                        href="{{ path('recipe_public', {'id': recipe.id}) }}"
+                        data-toggle="tooltip" title="Make recipe public. Cannot undo"  
+                        class="btn btn-light">
+                        
+                        {{ recipe.isPublic ? "Yes" : "No" }}
+                    
+                        </a>
+
+                    {% else %}
+
+                        {{ recipe.isPublic ? "Yes" : "No" }}
+
+                    {% endif %}                    
+                </td>
+                <td>
+
+                    {% if recipe.isOwner(app.user) %}
+                        <a 
+                            href="{{ path('recipe_share', {'id': recipe.id}) }}"
+                            data-toggle="tooltip" title="Share recipe"  
+                            class="btn btn-light">
+                    
+                                {{ recipe.isShared ? "Yes" : "No" }}
+
+                        </a>
+
+                    {% else %}
+
+                        {{ recipe.isShared ? "Yes" : "No" }}
+
+                    {% endif %}                    
+
+
+                </td>
+                <td>
+                    <div class="btn-group">
+                        <a 
+                            href="{{ path('recipe_show', {'id': recipe.id}) }}" 
+                            data-toggle="tooltip" title="Show recipe" 
+                            class="btn btn-light">
+                            <span class="fa fa-eye"></span>    
+                        </a>
+
+                        {% if recipe.isOwner(app.user) %}
+                            <a 
+                                href="{{ path('recipe_edit', {'id': recipe.id}) }}"
+                                data-toggle="tooltip" title="Edit recipe"  
+                                class="btn btn-light">
+                                <span class="fa fa-edit"></span>
+                            </a>
+
+
+                            <a 
+                                href="{{ path('recipe_share', {'id': recipe.id}) }}" 
+                                data-toggle="tooltip" title="Share recipe" 
+                                class="btn btn-light">
+                                <span class="fa fa-share"></span>
+                            </a>
+
+                            <a 
+                                href="{{ path('recipe_delete', {'id': recipe.id}) }}" 
+                                data-toggle="tooltip" title="Delete recipe" 
+                                class="btn btn-danger">
+                                <span class="fa fa-trash"></span>
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="7">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# only if logged in #}
+    {% if app.user %}
+
+        <a 
+            {% if focus_class %}
+                href="{{ path('coll_recipe_new', {'id' : coll.id}) }}"
+            {% else %}
+                href="{{ path('recipe_new' ) }}"
+            {% endif %}
+            data-toggle="tooltip" title="New recipe" 
+            class="btn btn-light">
+            <span class="fa fa-plus"></span>
+            New Recipe
+        </a>
+    
+    {% endif %}
+
+{% endblock %}

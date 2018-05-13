@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Collection{% endblock %}
+
+{% block body %}
+    <h1>Collection</h1> 
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ coll.id }}</td>
+            </tr>
+            <tr>
+                <th>Created</th>
+                <td>{{ coll.created ? coll.created|date('Y-m-d H:i:s') : 'not set' }}</td>
+            </tr>
+
+            <tr>
+                <th>User</th>
+                <td>{{ coll.user.username }}</td>
+            </tr>            
+            <tr>
+                <th>Title</th>
+                <td>{{ coll.title }}</td>
+            </tr>
+            <tr>
+                <th>IsPublic</th>
+                <td>{{ coll.isPublic ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>IsShared</th>
+                <td>{{ coll.isShared ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('coll_index') }}">Back</a>
+    {# only display if user owns form  #}
+    {% if coll.isOwner(app.user) %}
+
+        <a href="{{ path('coll_edit', {'id': coll.id}) }}">Edit</a>
+
+        {{ include('coll/_delete_form.html.twig') }}
+
+    {% endif %}
+    
+    {% include 'recipe/index_table.html.twig' with 
+        { 'recipes' : coll.recipes , 
+            "focus_class" : "coll" , 
+            "parent" : coll
+        } 
+    %}
+
+
+{% endblock %}

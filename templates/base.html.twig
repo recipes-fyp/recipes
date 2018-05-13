@@ -45,9 +45,15 @@
 
                 $(document).ready( ()=>{
                     // need a wap to swap around tickboxes followed by label!!
-                    $('form > label').each(function(){
-                         $(this).next('input').addBack().wrapAll('<div class="form-group"/>');
-                    });
+                    // $(':checkbox').each(function(){
+                    //     $(this).after( $(this).next() );
+                    // }
+
+                    // seems the form is aleady grouped!!
+
+                    // $('form > label').each(function(){
+                    //      $(this).next('input').addBack().wrapAll('<div class="form-group"/>');
+                    // });
                     var btn_classes = "btn btn-dark btn-primary";
                     $("label").addClass("form-control-label");                    
                     $("input").addClass("form-control");

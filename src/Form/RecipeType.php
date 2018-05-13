@@ -3,6 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Entity\User;
+use App\Entity\Coll;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -12,8 +15,6 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 // use Symfony\Component\Form\CallbackTransformer;
-use App\Entity\User;
-use App\Entity\Collection;
 
 class RecipeType extends AbstractType
 {
@@ -24,19 +25,20 @@ class RecipeType extends AbstractType
                    DateType::class ,
                    [ 'widget'   => 'single_text' ,
                     'html5'     => true ,
+                    'disabled'  => true ,
                     'data'      => new \DateTime(),
                     'format'    => "yy-MM-dd HH:mm:ss",
                     'attr'      => ['readonly'      => true ]
                ] 
             )
-            // ->add('user' ,
-            //         User::class, 
-            //        [
-            //         'attr'      => ['readonly'      => true ]
-            //         ] 
-            // )          
-            ->add("collection" , null, [
-                'data_class' => 'App\Entity\Collection'
+            ->add('user' , null , [
+                    'disabled'  => true ,
+                    'attr'      => ['readonly'      => true ]
+                    ] 
+            )          
+            ->add("coll" , null, [
+                'label' => 'Collection'
+                // 'data_class' => 'App\Entity\Coll'
             ] ) 
             ->add('title')
             ->add('summary')

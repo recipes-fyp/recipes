@@ -93,6 +93,14 @@ class CollController extends MyBaseController
     {
         if ($this->isCsrfTokenValid('delete'.$coll->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
+            /*
+                need to detach all associated recipes first
+
+            */
+            foreach ($coll->getRecipes() as $key => $recipe) {
+                $recipe->setColl(null);
+            }
+
             $em->remove($coll);
             $em->flush();
         }
@@ -106,6 +114,14 @@ class CollController extends MyBaseController
     public function share(Coll $coll): Response
     {
         $coll->setIsShared( !$coll->getIsShared() );
+        /*
+            make each recipe in coll shared/not as well
+            doesn't account for recipes added to collection afterwards!!
+            recipes should take shared/public state of their collection - if set 
+        */ 
+        foreach ($coll->getRecipes() as $key => $recipe) {
+                $recipe->setShared( $coll->getIsShared() );
+        }
         $this->save($coll);
         return $this->redirectToRoute('coll_index');
     }
@@ -115,6 +131,15 @@ class CollController extends MyBaseController
     public function make_public(Coll $coll): Response
     {
         $coll->setIsPublic(true);
+        /*
+            make each recipe in coll shared/not as well
+            doesn't account for recipes added to collection afterwards!!
+            recipes should take shared/public state of their collection - if set 
+        */ 
+        foreach ($coll->getRecipes() as $key => $recipe) {
+                $recipe->setPublic( $coll->getIsPublic() );
+        }
+
         $this->save($coll);
         return $this->redirectToRoute('coll_index');
     }

@@ -5,6 +5,9 @@ namespace App\Controller;
 use App\Entity\Recipe;
 use App\Form\RecipeType;
 use App\Repository\RecipeRepository;
+
+use App\Entity\Coll;
+
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -41,6 +44,21 @@ class RecipeController extends MyBaseController
         ]);
     }
 
+    // /**    
+    // /**
+    //  * @Route("/coll/{id}", name="coll_recipe_index", methods="GET")
+    //  */
+    // public function coll_index(Coll $coll): Response
+    // {
+
+    //     return $this->render('recipe/index.html.twig', 
+    //         [
+    //             'recipes'       => $coll->getRecipes() , 
+    //             "showHeader"    =>  false
+    //     ]);
+    // }
+
+
 
     /**
      * @Route("/new", name="recipe_new", methods="GET|POST")
@@ -56,6 +74,29 @@ class RecipeController extends MyBaseController
             $recipe->setUser( $this->getUser());
             $this->save($recipe);
             return $this->redirectToRoute('recipe_index');
+        }
+
+        return $this->render('recipe/new.html.twig', [
+            'recipe' => $recipe,
+            'form' => $form->createView(),
+        ]);
+    }
+    /**
+     * @Route("/new/coll/{id}", name="coll_recipe_new", methods="GET|POST")
+     */
+    public function coll_new(Request $request,Coll $coll): Response
+    {
+        $recipe = new Recipe();
+        $recipe->setUser( $this->getUser());
+        $recipe->setColl($coll);
+        $form = $this->createForm(RecipeType::class, $recipe);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $recipe->setUser( $this->getUser());
+            $recipe->setColl($coll);
+            $this->save($recipe);
+            return $this->redirectToRoute('coll_show' , ['id' => $coll->getId() ] );
         }
 
         return $this->render('recipe/new.html.twig', [

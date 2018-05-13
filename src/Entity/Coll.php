@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\CollRepository")
- * @ORM\Table(name="`collection`")
+ * @ORM\Table(name="`coll`")
  */
 class Coll
 {
@@ -40,15 +40,21 @@ class Coll
      */
     private $isPublic;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="collection")
-     */
-    private $recipes;
+    // *
+    //  * @ORM\OneToMany(targetEntity="App\Entity\Recipe")
+    //  * , mappedBy="coll"
+     
+    // private $recipes;
 
     /**
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $created;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="coll")
+     */
+    private $recipes;
 
     public function __construct()
     {
@@ -111,7 +117,7 @@ class Coll
     /**
      * @return Collection|Recipe[]
      */
-    public function getRecipes(): DocCollection
+    public function getRecipes(): Collection
     {
         return $this->recipes;
     }

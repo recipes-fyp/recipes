@@ -2,7 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Collektion;
+use App\Entity\Coll;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -18,8 +18,8 @@ class CollType extends AbstractType
     {
         $builder
             ->add('created' ,
-                   DateType::class ,
-                   [ 'widget'   => 'single_text' ,
+                   DateType::class , [ 
+                    'widget'   => 'single_text' ,
                     'disabled'  => true ,
                     'html5'     => true ,
                     'data'      => new \DateTime(),
@@ -27,13 +27,10 @@ class CollType extends AbstractType
                     'attr'      => ['readonly'      => true ]
                ] 
             )        
-            ->add('user' , 
-                   null ,
-                   [ 
+            ->add('user' , null , [ 
                     'disabled'  => true ,
                     'attr'      => ['readonly'      => true ]
                     ] 
-
             )
             ->add('title')
             ->add('isShared')
@@ -44,7 +41,7 @@ class CollType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => collektion::class,
+            'data_class' => Coll::class,
         ]);
     }
 }

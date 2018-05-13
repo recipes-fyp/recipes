@@ -18,32 +18,29 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('created' , 
-                    DateType::class ,
-                   [ 'widget'   => 'single_text' ,
+                    DateType::class ,[ 
+                    'widget'   => 'single_text' ,
                     'html5'     => true ,
-                    'disabled'     => true ,
+                    'disabled'  => true ,
                     'data'      => new \DateTime(),
                     'format'    => "yy-MM-dd HH:mm:ss",
                     'attr'      => ['readonly'      => true ]
                     ]
             )
 
-            ->add('recipe' , null , 
-                   [ 
+            ->add('recipe' , null , [ 
                     'disabled'     => true ,
                     'attr'      => ['readonly'      => true ]
                     ]
     
             ) 
-            ->add('user' , null ,
-                   [ 
-                    'disabled'     => true ,
+            ->add('user' , null ,[ 
+                    'disabled'  => true ,
                     'attr'      => ['readonly'      => true ]
                     ]
             )
             ->add('comment' ,
-                TextareaType::class , 
-                [
+                TextareaType::class , [
                 'attr'  => ['rows'      => 10 , 'cols'  => 50 ]
                 ]
             )
