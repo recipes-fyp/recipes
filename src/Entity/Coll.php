@@ -3,14 +3,16 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection as DocCollection ;
+use Doctrine\Common\Collections\Collection ;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\CollectionRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\CollRepository")
+ * @ORM\Table(name="`collection`")
  */
-class Collection
+class Coll
 {
+    use Owned;
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -19,7 +21,7 @@ class Collection
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="collections")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="colls")
      */
     private $user;
 
@@ -42,6 +44,11 @@ class Collection
      * @ORM\OneToMany(targetEntity="App\Entity\Recipe", mappedBy="collection")
      */
     private $recipes;
+
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $created;
 
     public function __construct()
     {
@@ -131,4 +138,21 @@ class Collection
 
         return $this;
     }
+
+    public function getCreated(): ?\DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(?\DateTimeInterface $created): self
+    {
+        $this->created = $created ? $created : new \DateTime ;
+
+        return $this;
+    }
+
+    public function __toString() {
+        return $this->title;
+    }
+
 }

@@ -25,7 +25,11 @@ class MyBaseController extends Controller {
 
 	}
 
-
+    public function save($object) {
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($object);
+        $em->flush();
+    }
 
 	public function log($msg) {
 		// $this->logger->log($msg);

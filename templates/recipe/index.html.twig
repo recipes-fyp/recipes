@@ -9,12 +9,13 @@
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Created</th>
+                <th>Owner</th>
                 <th>Title</th>
                 <th>Summary</th>
-                <th>Created</th>
                 <th>Steps</th>
                 <th>Ingredients</th>
-                <th>Owned</th>
+                {# <th>Owned</th> #}
                 <th>Public</th>
                 <th>Shared</th>
                 <th>Actions</th>
@@ -24,15 +25,16 @@
         {% for recipe in recipes %}
             <tr>
                 <td>{{ recipe.id }}</td>
+                <td>{{ recipe.created ? recipe.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ recipe.user.username }}</td>
                 <td>{{ recipe.title }}</td>
                 <td>{{ recipe.summary }}</td>
-                <td>{{ recipe.created ? recipe.created|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ recipe.steps }}</td>
                 <td>{{ recipe.ingredients }}</td>
-                <td>
+{#                 <td>
                     {{ recipe.isOwned(app.user) }}
                 </td>
-
+ #}
                 <td>
 
                     {# only display link if owned  #}

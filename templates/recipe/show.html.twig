@@ -31,11 +31,22 @@
             </tr>
             <tr>
                 <th>Steps</th>
-                <td>{{ recipe.steps }}</td>
+                <td>
+                    {# {{ recipe.steps }} #}
+                    {% for step in recipe._steps %}
+                        <li class="value">{{ step }}</li>
+                    {% endfor %}
+                </td>
+
             </tr>
             <tr>
                 <th>Ingredients</th>
-                <td>{{ recipe.ingredients }}</td>
+                <td>
+                    {# {{ recipe.ingredients }} #}
+                    {% for ingredient in recipe._ingredients %}
+                        <li class="value">{{ ingredient }}</li>
+                    {% endfor %}                    
+                </td>
             </tr>
 
             <tr>

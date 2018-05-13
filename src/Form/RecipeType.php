@@ -13,6 +13,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 
 // use Symfony\Component\Form\CallbackTransformer;
 use App\Entity\User;
+use App\Entity\Collection;
 
 class RecipeType extends AbstractType
 {
@@ -33,7 +34,10 @@ class RecipeType extends AbstractType
             //        [
             //         'attr'      => ['readonly'      => true ]
             //         ] 
-            // )            
+            // )          
+            ->add("collection" , null, [
+                'data_class' => 'App\Entity\Collection'
+            ] ) 
             ->add('title')
             ->add('summary')
             ->add('steps' , TextareaType::class , [

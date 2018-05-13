@@ -1,6 +1,8 @@
 
 ###> symfony/framework-bundle ###
 /.env
+.phpintel
+.idea
 /public/bundles/
 /var/
 /vendor/

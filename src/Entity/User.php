@@ -8,6 +8,9 @@ use FOS\UserBundle\Model\User as BaseUser;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use App\Entity\Coll;
+use App\Entity\Recipe;
+
 /**
  * @ORM\Entity
  * @ORM\Table(name="`user`")
@@ -37,16 +40,16 @@ class User extends BaseUser {
      private $comments;
  
      /**
-      * @ORM\OneToMany(targetEntity="App\Entity\Collection", mappedBy="user")
+      * @ORM\OneToMany(targetEntity="App\Entity\Coll", mappedBy="user")
       */
-     private $collections;
+     private $colls;
  
 
      public function __construct()
      {
          $this->recipes = new ArrayCollection();
          $this->comments = new ArrayCollection();
-         $this->collections = new ArrayCollection();
+         $this->colls = new ArrayCollection();
      }
      // this does not work - need to use controller
      public function isLoggedIn() :?bool
@@ -137,30 +140,30 @@ class User extends BaseUser {
     }
 
     /**
-     * @return Collection|Collection[]
+     * @return Collection|Coll[]
      */
-    public function getCollections(): Collection
+    public function getColls(): Collection
     {
-        return $this->collections;
+        return $this->colls;
     }
 
-    public function addCollection(Collection $collection): self
+    public function addColl(Coll $coll): self
     {
-        if (!$this->collections->contains($collection)) {
-            $this->collections[] = $collection;
-            $collection->setUser($this);
+        if (!$this->colls->contains($coll)) {
+            $this->coll[] = $coll;
+            $coll->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeCollection(Collection $collection): self
+    public function removeColl(Coll $coll): self
     {
-        if ($this->collections->contains($collection)) {
-            $this->collections->removeElement($collection);
+        if ($this->colls->contains($coll)) {
+            $this->coll->removeElement($coll);
             // set the owning side to null (unless already changed)
-            if ($collection->getUser() === $this) {
-                $collection->setUser(null);
+            if ($coll->getUser() === $this) {
+                $coll->setUser(null);
             }
         }
 

@@ -41,11 +41,6 @@ class RecipeController extends MyBaseController
         ]);
     }
 
-    public function _save(Recipe $recipe) {
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($recipe);
-        $em->flush();
-    }
 
     /**
      * @Route("/new", name="recipe_new", methods="GET|POST")
@@ -53,12 +48,13 @@ class RecipeController extends MyBaseController
     public function new(Request $request): Response
     {
         $recipe = new Recipe();
+        $recipe->setUser( $this->getUser());
         $form = $this->createForm(RecipeType::class, $recipe);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $recipe->setUser( $this->getUser());
-            $this->_save($recipe);
+            $this->save($recipe);
             return $this->redirectToRoute('recipe_index');
         }
 
@@ -73,27 +69,13 @@ class RecipeController extends MyBaseController
      */
     public function show(Recipe $recipe): Response
     {
+
+        $recipe->_steps = explode( PHP_EOL , $recipe->getSteps() );
+        $recipe->_ingredients = explode( PHP_EOL , $recipe->getIngredients() );
+
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
 
-    /**
-     * @Route("/share/{id}", name="recipe_share", methods="GET")
-     */
-    public function share(Recipe $recipe): Response
-    {
-        $recipe->setIsShared( !$recipe->getIsShared() );
-        $this->_save($recipe);
-        return $this->redirectToRoute('recipe_index');
-    }
-    /**
-     * @Route("/public/{id}", name="recipe_public", methods="GET")
-     */
-    public function make_public(Recipe $recipe): Response
-    {
-        $recipe->setIsPublic(true);
-        $this->_save($recipe);
-        return $this->redirectToRoute('recipe_index');
-    }
 
     /**
      * @Route("/edit/{id}", name="recipe_edit", methods="GET|POST")
@@ -126,9 +108,22 @@ class RecipeController extends MyBaseController
     }
 
     /**
-     * @Route("/delete/{id}", name="recipe_delete", methods="DELETE")
+     * @Route("/delete/{id}", name="recipe_delete", methods="GET")
      */
     public function delete(Request $request, Recipe $recipe): Response
+    {
+            $em = $this->getDoctrine()->getManager();
+            $em->remove($recipe);
+            $em->flush();
+
+        return $this->redirectToRoute('recipe_index');
+    }
+
+
+    /**
+     * @Route("/delete/{id}", name="recipe_delete_verb", methods="DELETE")
+     */
+    public function delete_verb(Request $request, Recipe $recipe): Response
     {
         if ($this->isCsrfTokenValid('delete'.$recipe->getId(), $request->request->get('_token'))) {
             $em = $this->getDoctrine()->getManager();
@@ -138,4 +133,24 @@ class RecipeController extends MyBaseController
 
         return $this->redirectToRoute('recipe_index');
     }
+
+    /**
+     * @Route("/share/{id}", name="recipe_share", methods="GET")
+     */
+    public function share(Recipe $recipe): Response
+    {
+        $recipe->setIsShared( !$recipe->getIsShared() );
+        $this->_save($recipe);
+        return $this->redirectToRoute('recipe_index');
+    }
+    /**
+     * @Route("/public/{id}", name="recipe_public", methods="GET")
+     */
+    public function make_public(Recipe $recipe): Response
+    {
+        $recipe->setIsPublic(true);
+        $this->_save($recipe);
+        return $this->redirectToRoute('recipe_index');
+    }
+
 }

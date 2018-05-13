@@ -4,8 +4,12 @@
 
 {% block body %}
     <h1>Create new Collection</h1>
+	<div class="btn-group">
+		
+	    {{ include('collection/_form.html.twig') }}
 
-    {{ include('collection/_form.html.twig') }}
+	    <a href="{{ path('collection_index') }}">Back</a>
 
-    <a href="{{ path('collection_index') }}">back to list</a>
+	</div>
+
 {% endblock %}

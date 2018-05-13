@@ -2,25 +2,23 @@
 
 namespace App\Repository;
 
-use App\Entity\Recipe;
+use App\Entity\Coll;
 use App\Entity\User;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
-// *
-//  * @method Recipe|null find($id, $lockMode = null, $lockVersion = null)
-//  * @method Recipe|null findOneBy(array $criteria, array $orderBy = null)
-//  * @method Recipe[]    findAll()
-//  * @method Recipe[]    findAllVisble($user)
-//  * @method Recipe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- 
-class RecipeRepository extends ServiceEntityRepository
+/**
+ * @method Collektion|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Collektion|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Collektion[]    findAll()
+ * @method Collektion[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ */
+class CollRepository extends ServiceEntityRepository
 {
-
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, Recipe::class);
+        parent::__construct($registry, Coll::class);
     }
 
     // user is null if not logged in
@@ -51,15 +49,15 @@ class RecipeRepository extends ServiceEntityRepository
 
 
 //    /**
-//     * @return Recipe[] Returns an array of Recipe objects
+//     * @return Coll[] Returns an array of Coll objects
 //     */
     /*
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('r.id', 'ASC')
+            ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -68,10 +66,10 @@ class RecipeRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Recipe
+    public function findOneBySomeField($value): ?Coll
     {
-        return $this->createQueryBuilder('r')
-            ->andWhere('r.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()
