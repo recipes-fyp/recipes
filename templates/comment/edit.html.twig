@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Comment{% endblock %}
+
+{% block body %}
+    <h1>Edit Comment</h1>
+
+    {{ include('comment/_form.html.twig', {'button_label': 'Update'}) }}
+{# 	
+	moved into form
+	<div class="btn-group">
+
+	    <a href="{{ path('recipe_show' , { 'id' : recipeId } ) }}">Back</a>
+
+	    {{ include('comment/_delete_form.html.twig') }}
+
+	</div> #}
+
+{% endblock %}

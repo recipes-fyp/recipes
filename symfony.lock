@@ -68,6 +68,9 @@
     "egulias/email-validator": {
         "version": "2.1.4"
     },
+    "friendsofsymfony/ckeditor-bundle": {
+        "version": "1.0.0"
+    },
     "friendsofsymfony/user-bundle": {
         "version": "v2.1.2"
     },
@@ -153,6 +156,9 @@
         "version": "v4.0.9"
     },
     "symfony/event-dispatcher": {
+        "version": "v4.0.9"
+    },
+    "symfony/expression-language": {
         "version": "v4.0.9"
     },
     "symfony/filesystem": {

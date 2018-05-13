@@ -1,0 +1,73 @@
+{# {% extends 'base.html.twig' %} #}
+
+{# {% block title %}Comment index{% endblock %} #}
+
+{% block body2 %}
+    <h2>Comment index</h2>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Author</th>
+                <th>Created</th>
+                <th>Comment</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for comment in comments %}
+            <tr>
+                <td>{{ comment.id }}</td>
+                <td>{{ comment.user.username }}</td>
+                <td>{{ comment.created ? comment.created|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ comment.comment }}</td>
+                <td>
+{#                     <a href="{{ path('comment_show', {'recipeId' : recipe.id , 'id': comment.id}) }}">show</a>
+                    <a href="{{ path('comment_edit', {'recipeId' : recipe.id , 'id': comment.id}) }}">edit</a>
+ #}
+                    <div class="btn-group">
+                        <a 
+                            href="{{ path('comment_show', {'recipeId' : recipe.id , 'id': comment.id} ) }}" 
+                            data-toggle="tooltip" title="Show comment" 
+                            class="btn btn-light">
+                            <span class="fa fa-eye"></span>    
+                        </a>
+
+                        {% if comment.isOwner(app.user) %}
+                            <a 
+                                href="{{ path('comment_edit', {'recipeId' : recipe.id , 'id': comment.id} ) }}"
+                                data-toggle="tooltip" title="Edit comment"  
+                                class="btn btn-light">
+                                <span class="fa fa-edit"></span>
+                            </a>
+
+                            <a 
+                                href="{{ path('comment_delete', {'recipeId' : recipe.id , 'id': comment.id} ) }}" 
+                                data-toggle="tooltip" title="Delete comment" 
+                                class="btn btn-danger">
+                                <span class="fa fa-trash"></span>
+                            </a>
+
+                        {% endif %}
+
+                    </div>
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    {# only if logged in #}
+    {% if app.user %}
+
+        <a href="{{ path('comment_new' , { 'recipeId' : recipe.id } ) }}">Add Comment</a>
+    
+    {% endif %}
+
+{% endblock %}

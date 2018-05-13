@@ -7,6 +7,23 @@
         	<link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/slate/bootstrap.min.css">
         	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
         	{# <link rel="stylesheet" type="text/css" href="https://bootswatch.com/4/cosmo/bootstrap.min.css"/> #}
+            <style type="text/css">
+            /*  override Boostrap styling */
+                .form-control {
+                    width : initial;
+                    display : inline-block;
+                }
+                .form-control-label {
+                    width : 10% ;
+                }
+                .form-control-label{ 
+                    vertical-align: top;
+                }
+                /* the normal delete button has its own form !! keep it on one line */
+                form#delete, button {
+                    display:inline-block;
+                }
+            </style>
         {% endblock %}
     </head>
     <body>
@@ -22,6 +39,23 @@
 			<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
 			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+
+            {# auto markup forms for boostrap  #}
+            <script type="text/javascript">
+
+                $(document).ready( ()=>{
+                    // need a wap to swap around tickboxes followed by label!!
+                    $('form > label').each(function(){
+                         $(this).next('input').addBack().wrapAll('<div class="form-group"/>');
+                    });
+                    var btn_classes = "btn btn-dark btn-primary";
+                    $("label").addClass("form-control-label");                    
+                    $("input").addClass("form-control");
+                    $(":submit").addClass(btn_classes);
+                    $("a").addClass(btn_classes);
+                    $("form#delete > button").addClass("btn-danger");
+                });
+            </script>
         {% endblock %}
     </body>
 </html>
