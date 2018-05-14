@@ -120,7 +120,7 @@ class CollController extends MyBaseController
             recipes should take shared/public state of their collection - if set 
         */ 
         foreach ($coll->getRecipes() as $key => $recipe) {
-                $recipe->setShared( $coll->getIsShared() );
+                $recipe->setIsShared( $coll->getIsShared() );
         }
         $this->save($coll);
         return $this->redirectToRoute('coll_index');
