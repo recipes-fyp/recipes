@@ -1,4 +1,5 @@
 <IfModule mod_rewrite.c>
+    Options +FollowSymLinks +SymLinksIfOwnerMatch
     RewriteEngine On
 
     # Determine the RewriteBase automatically and set it as environment variable.
