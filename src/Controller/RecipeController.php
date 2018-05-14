@@ -181,7 +181,7 @@ class RecipeController extends MyBaseController
     public function share(Recipe $recipe): Response
     {
         $recipe->setIsShared( !$recipe->getIsShared() );
-        $this->_save($recipe);
+        $this->save($recipe);
         return $this->redirectToRoute('recipe_index');
     }
     /**
@@ -190,7 +190,7 @@ class RecipeController extends MyBaseController
     public function make_public(Recipe $recipe): Response
     {
         $recipe->setIsPublic(true);
-        $this->_save($recipe);
+        $this->save($recipe);
         return $this->redirectToRoute('recipe_index');
     }
 
