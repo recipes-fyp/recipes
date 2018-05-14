@@ -122,7 +122,7 @@
     {% if app.user %}
 
         <a 
-            {% if focus_class %}
+            {% if focus_class is defined %}
                 href="{{ path('coll_recipe_new', {'id' : coll.id}) }}"
             {% else %}
                 href="{{ path('recipe_new' ) }}"
